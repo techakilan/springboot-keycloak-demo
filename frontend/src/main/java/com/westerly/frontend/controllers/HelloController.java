@@ -1,5 +1,7 @@
 package com.westerly.frontend.controllers;
 
+import java.security.Principal;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,8 +25,9 @@ public class HelloController {
     }
 
     @GetMapping("/welcome")
-    public String hello(Model model) {
+    public String hello(Model model, Principal principal) {
         ResponseEntity<String> response = keycloakRestTemplate.getForEntity("http://localhost:9294/data", String.class);
+        model.addAttribute("username", principal.getName());
         model.addAttribute("message", response.getBody());
         return "hello";
 

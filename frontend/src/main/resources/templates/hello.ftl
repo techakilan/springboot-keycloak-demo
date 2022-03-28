@@ -7,6 +7,6 @@
     <title>Home page</title>
 </head>
 <body>
-    Welcome ${message}
+   Hi ${username} Welcome ${message}
 </body>
 </html>
