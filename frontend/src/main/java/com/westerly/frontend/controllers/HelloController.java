@@ -3,6 +3,7 @@ package com.westerly.frontend.controllers;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class HelloController {
     @Autowired
-    RestTemplate restTemplate;
+    public KeycloakRestTemplate keycloakRestTemplate;
 
     @GetMapping("/")
     public String home() {
@@ -23,7 +24,7 @@ public class HelloController {
 
     @GetMapping("/welcome")
     public String hello(Model model) {
-        ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:9294/data", String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.getForEntity("http://localhost:9294/data", String.class);
         model.addAttribute("message", response.getBody());
         return "hello";
 

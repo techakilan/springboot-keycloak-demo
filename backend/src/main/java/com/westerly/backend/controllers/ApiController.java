@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
     @GetMapping("/data")
     public String home() {
-        return "data";
+        return "data from rest api";
     }
 }
