@@ -5,7 +5,10 @@ import java.security.Principal;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,9 +28,12 @@ public class HelloController {
     }
 
     @GetMapping("/welcome")
-    public String hello(Model model, Principal principal) {
+    public String hello(Model model, KeycloakAuthenticationToken keycloakAuthenticationToken) {
         ResponseEntity<String> response = keycloakRestTemplate.getForEntity("http://localhost:9294/data", String.class);
-        model.addAttribute("username", principal.getName());
+        @SuppressWarnings("unchecked")
+        KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) keycloakAuthenticationToken
+                .getPrincipal();
+        model.addAttribute("username", principal.getKeycloakSecurityContext().getToken().getFamilyName());
         model.addAttribute("message", response.getBody());
         return "hello";
 
